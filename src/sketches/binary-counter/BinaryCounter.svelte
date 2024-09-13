@@ -1,13 +1,23 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
 
-  let counter = 0b0;
+  export let intervalMs = 50;
+  export let delayMs = 0;
+  export let length = 10;
+
+  let counter = 0;
   let intervalId: number = 0;
 
   onMount(() => {
-    intervalId = setInterval(() => {
-      counter++;
-    }, 50);
+    setTimeout(() => {
+      intervalId = setInterval(() => {
+        if (counter.toString(2).length < length) {
+          counter++;
+        } else {
+          counter = 0;
+        }
+      }, intervalMs);
+    }, delayMs);
   });
 
   onDestroy(() => {
@@ -16,11 +26,7 @@
 </script>
 
 <div class="wrapper">
-  <div class="counter">{counter.toString(2).padStart(10, "0")}</div>
-  <div class="counter">{counter.toString(2).padStart(10, "0")}</div>
-  <div class="counter">{counter.toString(2).padStart(10, "0")}</div>
-  <div class="counter">{counter.toString(2).padStart(10, "0")}</div>
-  <div class="counter">{counter.toString(2).padStart(10, "0")}</div>
+  <div class="counter">{counter.toString(2).padStart(length, "0")}</div>
 </div>
 
 <style>
